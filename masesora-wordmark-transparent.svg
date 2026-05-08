@@ -1,0 +1,12 @@
+<svg viewBox="0 0 480 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="MASESORA - Dinamismo Empresarial">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;800&amp;display=swap');
+      .ms-bold{font-family:'Montserrat',sans-serif;font-weight:800;letter-spacing:.10em}
+      .ms-medium{font-family:'Montserrat',sans-serif;font-weight:500;letter-spacing:.42em}
+    </style>
+  </defs>
+  <text x="240" y="72" class="ms-bold" font-size="56" fill="currentColor" text-anchor="middle">MASESORA</text>
+  <line x1="80" y1="86" x2="400" y2="86" stroke="#B89D52" stroke-width="0.6" opacity="0.5"/>
+  <text x="240" y="108" class="ms-medium" font-size="11" fill="#B89D52" text-anchor="middle">DINAMISMO EMPRESARIAL</text>
+</svg>

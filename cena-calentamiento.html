@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Cena Calentamiento · 29 Mayo · Gym Polop</title>
+<link rel="icon" href="favicon-masesora.ico" type="image/x-icon"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:ital,wght@0,300;0,400;0,600;0,800;1,300;1,400&family=Playfair+Display:ital,wght@0,700;1,400;1,700&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --hot:#1DCECE;
+  --gold:#F5C84A;
+  --ice:#A8EDFF;
+  --dark:#08070A;
+  --dark2:#110F16;
+  --dark3:#1C1824;
+  --white:#F8F4FF;
+  --muted:#7A7490;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--dark);color:var(--white);overflow-x:hidden}
+
+#bgCanvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.45}
+
+body::after{
+  content:'';position:fixed;inset:0;z-index:1;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity:.3;
+}
+section,header,footer{position:relative;z-index:2}
+
+/* ══ TICKER (scrolling, fixed, solid teal) ═══════ */
+.ticker-wrap{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  overflow:hidden;
+  background:var(--hot);
+  padding:.46rem 0;
+  border-bottom:1px solid rgba(0,0,0,.2);
+  white-space:nowrap;
+}
+.ticker-inner{
+  display:inline-block;
+  animation:ticker 30s linear infinite;
+}
+.ticker-inner span{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:.88rem;letter-spacing:.22em;
+  color:var(--dark);
+  padding:0 1.6rem;
+  text-transform:uppercase;
+}
+.ticker-inner span.dot{
+  color:rgba(8,7,10,.35);
+  padding:0 .5rem;
+}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ══ NAV ══════════════════════════════════════════ */
+nav{
+  position:fixed;top:34px;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.8rem 2rem;
+  background:rgba(8,7,10,.75);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+.nav-brand{display:flex;align-items:center;gap:1.2rem}
+.logo-gp-img{height:34px;width:34px;object-fit:contain;border-radius:3px;display:block}
+.nav-divider{width:1px;height:26px;background:rgba(255,255,255,.13)}
+.logo-masesora-img{
+  height:18px;opacity:.55;
+  filter:brightness(0) invert(1);
+  display:block;
+}
+.nav-date{
+  font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.15em;
+  color:var(--gold);
+}
+
+/* ══ HERO ════════════════════════════════════════ */
+.hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:10rem 1.5rem 5rem;
+  overflow:hidden;
+}
+.hero-eyebrow{
+  font-size:.68rem;font-weight:600;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--hot);margin-bottom:1.6rem;
+  opacity:0;animation:fadeUp .7s .2s forwards;
+}
+.hero-h1{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(5rem,18vw,14rem);
+  line-height:.9;letter-spacing:-.01em;
+  opacity:0;animation:fadeUp .8s .35s forwards;
+}
+.hero-h1 span{display:block}
+.line-cena{color:var(--white)}
+.line-calent{
+  font-size:.82em;
+  letter-spacing:.04em;
+  color:var(--hot);
+}
+.hero-sub{
+  margin-top:1.4rem;
+  font-size:clamp(.95rem,2vw,1.15rem);font-weight:300;letter-spacing:.08em;
+  color:rgba(248,244,255,.55);
+  opacity:0;animation:fadeUp .7s .55s forwards;
+}
+
+/* countdown */
+.hero-countdown{margin-top:2.4rem;opacity:0;animation:fadeUp .7s .75s forwards}
+.cd-label{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:.7rem}
+.cd-units{display:flex;gap:.8rem;justify-content:center;align-items:flex-start}
+.cdu{display:flex;flex-direction:column;align-items:center;gap:.1rem}
+.cdu-n{
+  font-family:'Bebas Neue',sans-serif;font-size:clamp(2.4rem,6vw,4rem);
+  line-height:1;color:var(--gold);
+}
+.cdu-t{font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+.cd-sep{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:rgba(245,200,74,.3);margin-top:.1rem}
+
+/* ══ REVEAL ══════════════════════════════════════ */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s,transform .8s}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-60px);transition:opacity .8s,transform .8s}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(60px);transition:opacity .8s,transform .8s}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+
+/* ══ SECTION COMMON ══════════════════════════════ */
+.section-tag{
+  display:inline-block;font-size:.62rem;letter-spacing:.25em;text-transform:uppercase;
+  color:var(--hot);border:1px solid rgba(29,206,206,.3);border-radius:50px;
+  padding:.3rem .9rem;margin-bottom:1.2rem;
+}
+.section-big{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(3rem,9vw,7rem);
+  line-height:.95;letter-spacing:-.01em;
+  color:var(--white);
+}
+.section-big .accent{color:var(--hot)}
+
+/* ══ PREGUNTA ════════════════════════════════════ */
+.pregunta{
+  padding:7rem 1.5rem;text-align:center;
+  background:var(--dark2);
+}
+.pregunta-q{
+  font-family:'Playfair Display',serif;font-style:italic;
+  font-size:clamp(2rem,6vw,4.5rem);
+  line-height:1.15;
+  color:var(--white);
+  max-width:900px;margin:0 auto;
+}
+.pregunta-hint{
+  margin-top:1.5rem;font-size:clamp(.85rem,2vw,1rem);
+  color:var(--muted);letter-spacing:.04em;
+}
+
+/* ══ PROTAGONISTAS ═══════════════════════════════ */
+.personas{
+  padding:7rem 1.5rem;
+  background:var(--dark);
+}
+.personas-inner{max-width:1100px;margin:0 auto}
+.personas-head{text-align:center;margin-bottom:4.5rem}
+
+.protagonistas-list{
+  max-width:860px;
+  margin:0 auto;
+}
+.protagonista{
+  padding:3rem 0;
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+.protagonista:last-of-type{border-bottom:none}
+
+.prot-header{
+  display:flex;align-items:center;gap:.9rem;
+  margin-bottom:1.2rem;
+  flex-wrap:wrap;
+}
+.prot-name{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.8rem;letter-spacing:.06em;line-height:1;
+}
+.prot-name.teal{color:var(--hot)}
+.prot-name.ice{color:var(--ice)}
+.prot-name.gold{color:var(--gold)}
+
+.prot-sep{color:rgba(255,255,255,.18);font-size:.8rem}
+.prot-role{
+  font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--muted);
+}
+.prot-quote{
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+  font-size:clamp(1.35rem,3.2vw,2.1rem);
+  line-height:1.4;
+  color:var(--white);
+}
+
+/* Andrea — artista invitada, rol secundario */
+.artista-line{
+  max-width:860px;
+  margin:2.5rem auto 0;
+  text-align:center;
+  padding:1.4rem 0;
+  border-top:1px solid rgba(255,255,255,.07);
+  font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--muted);
+}
+.artista-line strong{color:rgba(248,244,255,.7);font-weight:600;letter-spacing:.18em}
+
+/* ══ EQUIPOS ══════════════════════════════════════ */
+.equipos{
+  padding:7rem 1.5rem;
+  text-align:center;
+  overflow:hidden;
+  background:var(--dark2);
+}
+.equipos-vs{
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:center;
+  gap:2rem 3rem;margin:3.5rem 0;
+}
+.equipo-name{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(2.2rem,7vw,5.5rem);
+  line-height:1;letter-spacing:.02em;
+  transition:transform .3s;
+  cursor:default;
+}
+.equipo-name:hover{transform:scale(1.04)}
+.equipo-name.beyond{color:#F5B8D4}
+.equipo-name.ricardo{color:var(--ice)}
+.vs-badge{
+  font-family:'Bebas Neue',sans-serif;font-size:3.5rem;
+  color:rgba(248,244,255,.12);
+  border:2px solid rgba(248,244,255,.08);
+  border-radius:50%;width:70px;height:70px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.equipos-sub{
+  max-width:600px;margin:0 auto;
+  font-size:clamp(.85rem,2vw,1rem);
+  color:var(--muted);line-height:1.7;
+}
+
+/* ══ FORM ════════════════════════════════════════ */
+.form-section{
+  padding:7rem 1.5rem 8rem;
+  background:var(--dark);
+  text-align:center;
+}
+.form-headline{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(5rem,18vw,13rem);
+  line-height:.9;letter-spacing:-.01em;
+  color:var(--hot);
+  margin-bottom:.5rem;
+}
+.form-sub{
+  font-size:clamp(.85rem,2vw,1.05rem);
+  color:var(--muted);margin-bottom:3.5rem;
+  letter-spacing:.04em;
+}
+.form-sub strong{color:var(--gold)}
+
+/* ── Iframe Google Form ── */
+.form-iframe-wrap{
+  max-width:640px;margin:0 auto;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:6px;
+  overflow:hidden;
+  background:#fff; /* Google Form fondo blanco */
+}
+.form-iframe-wrap iframe{
+  display:block;width:100%;
+  min-height:560px;border:none;
+}
+
+/* ── Form personalizado (fallback) ── */
+.form-fields{
+  max-width:480px;margin:0 auto;
+  display:flex;flex-direction:column;gap:1rem;
+}
+.ff{position:relative}
+.ff input,.ff select{
+  width:100%;background:rgba(255,255,255,.04);border:0;
+  border-bottom:2px solid rgba(255,255,255,.12);
+  color:var(--white);font-family:'Inter',sans-serif;font-size:1rem;
+  padding:1rem .4rem .7rem;outline:none;
+  transition:border-color .3s;-webkit-appearance:none;appearance:none;border-radius:0;
+}
+.ff select{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7'%3E%3Cpath d='M0 0l5 7 5-7z' fill='%23F5C84A'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right .5rem center;
+  padding-right:2rem;cursor:pointer;
+}
+.ff select option{background:var(--dark2);color:var(--white)}
+.ff input::placeholder{color:transparent}
+.ff label{
+  position:absolute;top:1rem;left:.4rem;
+  font-size:.85rem;letter-spacing:.06em;color:var(--muted);
+  transition:all .25s;pointer-events:none;
+}
+.ff input:focus,.ff input:not(:placeholder-shown){border-color:var(--hot)}
+.ff input:focus~label,.ff input:not(:placeholder-shown)~label{
+  top:-.1rem;font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--hot);
+}
+.ff select:focus,.ff select.has-value{border-color:var(--gold)}
+.ff .select-label{
+  position:absolute;top:.95rem;left:.4rem;
+  font-size:.85rem;color:var(--muted);transition:all .25s;pointer-events:none;
+}
+.ff select:focus~.select-label,.ff.sel-active .select-label{
+  top:-.1rem;font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);
+}
+.submit-wrap{margin-top:2.2rem}
+.submit-btn{
+  width:100%;padding:1.2rem;
+  background:var(--hot);
+  color:var(--dark);border:none;
+  font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.2em;
+  cursor:pointer;border-radius:4px;
+  font-weight:900;
+  transition:transform .2s,opacity .2s;
+}
+.submit-btn:hover:not(:disabled){transform:translateY(-2px);opacity:.88}
+.submit-btn:disabled{opacity:.45;cursor:not-allowed}
+.privacy-note{margin-top:1rem;font-size:.72rem;color:var(--muted);line-height:1.5}
+.alert{
+  display:none;border-radius:4px;padding:1rem 1.2rem;
+  font-size:.88rem;line-height:1.5;margin-top:1.2rem;
+}
+.alert.success{display:block;background:rgba(80,220,140,.1);border:1px solid rgba(80,220,140,.35);color:#7EFFC3}
+.alert.error{display:block;background:rgba(29,206,206,.08);border:1px solid rgba(29,206,206,.3);color:var(--hot)}
+
+/* Estado cerrado */
+.closed-state{
+  display:none;max-width:480px;margin:0 auto;
+  background:rgba(245,200,74,.06);border:1px solid rgba(245,200,74,.18);
+  border-radius:6px;padding:2rem;
+  color:#E8D5B0;font-size:1rem;line-height:1.65;
+}
+
+/* ══ FOOTER ══════════════════════════════════════ */
+footer{
+  border-top:1px solid rgba(255,255,255,.07);
+  padding:2.5rem 2rem;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:1rem;
+}
+.footer-left{display:flex;align-items:center;gap:1rem}
+.footer-logo-img{height:30px;width:30px;object-fit:contain;border-radius:3px;display:block}
+.footer-sep{color:rgba(255,255,255,.15)}
+.footer-right{font-size:.72rem;color:var(--muted);letter-spacing:.04em;text-align:right}
+.footer-right strong{color:rgba(245,200,74,.7);font-weight:600}
+.footer-right a{color:inherit;text-decoration:none}
+
+/* ══ MASESORA STRIP ══════════════════════════════ */
+.masesora-strip{
+  position:relative;z-index:2;
+  background:#06050A;
+  border-top:1px solid rgba(29,206,206,.18);
+  padding:.9rem 2rem;
+  display:flex;align-items:center;justify-content:center;
+  gap:1.8rem;flex-wrap:wrap;text-align:center;
+}
+.masesora-strip p{
+  font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(248,244,255,.3);
+}
+.masesora-strip a{
+  font-family:'Bebas Neue',sans-serif;font-size:.95rem;letter-spacing:.22em;
+  color:var(--hot);text-decoration:none;
+  transition:opacity .2s;
+}
+.masesora-strip a:hover{opacity:.7}
+.masesora-dot{color:rgba(29,206,206,.2);margin:0 .2rem}
+
+/* ══ MASESORA PROMO — identidad de marca (navy + dorado + Montserrat) ══ */
+.mp-proceso{background:#ffffff;padding:6rem 1.5rem}
+.mp-proceso-inner{max-width:760px;margin:0 auto}
+
+/* Cabecera de marca Masesora */
+.mp-brand{
+  display:flex;align-items:center;gap:1.4rem;
+  margin-bottom:3rem;
+  padding-bottom:2rem;
+  border-bottom:1px solid rgba(184,157,82,.25);
+}
+.mp-brand-logo{height:36px;display:block;filter:brightness(0)}
+.mp-brand-tagline{
+  font-family:'Montserrat',sans-serif;
+  font-size:.6rem;font-weight:500;letter-spacing:.28em;text-transform:uppercase;
+  color:#8B8B8B;
+}
+
+.mp-tag{
+  display:inline-block;
+  font-family:'Montserrat',sans-serif;
+  font-size:.6rem;font-weight:600;letter-spacing:.25em;text-transform:uppercase;
+  color:#B89D52;border:1px solid rgba(184,157,82,.4);border-radius:999px;
+  padding:.3rem 1rem;margin-bottom:1.2rem;
+}
+.mp-title{
+  font-family:'Montserrat',sans-serif;font-weight:800;
+  font-size:clamp(2.4rem,7vw,5rem);
+  line-height:1;letter-spacing:-.02em;text-transform:uppercase;
+  color:#0F1A35;margin-bottom:3.5rem;
+}
+.mp-title .accent{color:#B89D52}
+.mp-steps{display:flex;flex-direction:column}
+.mp-step{
+  display:grid;grid-template-columns:3.2rem 1fr;gap:1.8rem;
+  padding:2rem 0;
+  border-bottom:1px solid #E5E5E5;
+}
+.mp-step:last-child{border-bottom:none}
+.mp-num{
+  font-family:'Montserrat',sans-serif;font-weight:800;
+  font-size:2.2rem;line-height:1;
+  color:#B89D52;padding-top:.2rem;
+  letter-spacing:-.02em;
+}
+.mp-body h4{
+  font-family:'Montserrat',sans-serif;font-weight:700;
+  font-size:1.1rem;letter-spacing:.01em;
+  margin-bottom:.5rem;color:#0F1A35;
+}
+.mp-body p{
+  font-family:'Montserrat',sans-serif;font-weight:400;
+  font-size:.92rem;line-height:1.78;color:#4A4A4A;
+}
+
+.mp-cta{
+  padding:6rem 1.5rem 7rem;
+  background:#FAF7F2;
+  text-align:center;
+}
+.mp-cta-h2{
+  font-family:'Montserrat',sans-serif;font-weight:800;
+  font-size:clamp(2.8rem,9vw,6.5rem);
+  line-height:1;letter-spacing:-.02em;text-transform:uppercase;
+  color:#0F1A35;margin-bottom:.8rem;
+}
+.mp-cta-sub{
+  font-family:'Montserrat',sans-serif;font-weight:300;
+  font-size:clamp(.9rem,2vw,1.05rem);
+  color:#4A4A4A;margin-bottom:3rem;line-height:1.75;
+}
+.mp-cta-sub strong{color:#0F1A35;font-weight:600}
+.mp-btn{
+  display:inline-block;padding:1.1rem 3rem;
+  background:#B89D52;color:#0F1A35;
+  font-family:'Montserrat',sans-serif;font-weight:700;
+  font-size:1rem;letter-spacing:.12em;text-transform:uppercase;
+  border-radius:999px;text-decoration:none;
+  transition:transform .25s,background .25s;
+  box-shadow:0 4px 24px rgba(184,157,82,.25);
+}
+.mp-btn:hover{transform:translateY(-3px);background:#D4B96A}
+.mp-note{
+  margin-top:1.4rem;
+  font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:500;
+  color:rgba(15,26,53,.35);letter-spacing:.1em;text-transform:uppercase;
+}
+
+/* ══ KEYFRAMES ═══════════════════════════════════ */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(28px)}
+  to  {opacity:1;transform:translateY(0)}
+}
+
+/* ══ RESPONSIVE ══════════════════════════════════ */
+@media(max-width:700px){
+  nav{padding:.7rem 1rem}
+  .hero{padding:8.5rem 1rem 4rem}
+  .prot-quote{font-size:1.25rem}
+  footer{flex-direction:column;align-items:flex-start}
+  .footer-right{text-align:left}
+}
+</style>
+</head>
+<body>
+
+<canvas id="bgCanvas"></canvas>
+
+<!-- ══ TICKER (fijo arriba, scrolling azul sólido) ══ -->
+<div class="ticker-wrap">
+  <div class="ticker-inner">
+    <span>Jueves 29 de mayo</span><span class="dot">✦</span>
+    <span>Gym Polop</span><span class="dot">✦</span>
+    <span>Polop, Alicante</span><span class="dot">✦</span>
+    <span>Primera Edición</span><span class="dot">✦</span>
+    <span>Socios &amp; no socios</span><span class="dot">✦</span>
+    <span>Jueves 29 de mayo</span><span class="dot">✦</span>
+    <span>Gym Polop</span><span class="dot">✦</span>
+    <span>Polop, Alicante</span><span class="dot">✦</span>
+    <span>Primera Edición</span><span class="dot">✦</span>
+    <span>Socios &amp; no socios</span><span class="dot">✦</span>
+  </div>
+</div>
+
+<!-- ══ NAV ══════════════════════════════════════════ -->
+<nav>
+  <div class="nav-brand">
+    <img class="logo-gp-img"
+         src="619857201_17843410143680998_3782582012542148247_n.jpg"
+         alt="Gym Polop"/>
+    <span class="nav-divider"></span>
+    <img src="masesora-wordmark-transparent.svg" alt="Masesora" class="logo-masesora-img"/>
+  </div>
+  <span class="nav-date">29 · 05 · 2025</span>
+</nav>
+
+<!-- ══ HERO ══════════════════════════════════════════ -->
+<header class="hero">
+  <p class="hero-eyebrow">Primer Evento · Polop · Socios &amp; no socios</p>
+  <h1 class="hero-h1">
+    <span class="line-cena">Cena</span>
+    <span class="line-calent">Calentamiento</span>
+  </h1>
+  <p class="hero-sub">Porque el gym no es solo entrenar — también es vivir</p>
+
+  <div class="hero-countdown" id="heroCountdown">
+    <p class="cd-label">Inscripciones hasta el 22 de mayo</p>
+    <div class="cd-units">
+      <div class="cdu"><span class="cdu-n" id="cdD">--</span><span class="cdu-t">días</span></div>
+      <span class="cd-sep">:</span>
+      <div class="cdu"><span class="cdu-n" id="cdH">--</span><span class="cdu-t">horas</span></div>
+      <span class="cd-sep">:</span>
+      <div class="cdu"><span class="cdu-n" id="cdM">--</span><span class="cdu-t">min</span></div>
+      <span class="cd-sep">:</span>
+      <div class="cdu"><span class="cdu-n" id="cdS">--</span><span class="cdu-t">seg</span></div>
+    </div>
+  </div>
+</header>
+
+<!-- ══ PREGUNTA ═══════════════════════════════════════ -->
+<section class="pregunta">
+  <p class="section-tag reveal"></p>
+  <h2 class="pregunta-q reveal">Qué cómo lo vamos a pasar!?!</h2>
+  <p class="pregunta-hint reveal" style="transition-delay:.15s">
+    NO ESTÁS PREPARADA, DARLING!......... Aquí van las pistas.
+  </p>
+</section>
+
+<!-- ══ PROTAGONISTAS ══════════════════════════════════ -->
+<section class="personas">
+  <div class="personas-inner">
+    <div class="personas-head">
+      <p class="section-tag reveal">Los protagonistas</p>
+      <h2 class="section-big reveal" style="transition-delay:.1s">
+        Atención.<br><span class="accent">Personajes confirmados.</span>
+      </h2>
+    </div>
+
+    <div class="protagonistas-list">
+
+      <div class="protagonista reveal">
+        <div class="prot-header">
+          <span class="prot-name teal">Nano</span>
+          <span class="prot-sep">·</span>
+          <span class="prot-role">Misterio de la noche</span>
+        </div>
+        <p class="prot-quote">
+          "¿Estás preparado para verle con traje?<br>
+          Ni él mismo sabe si está listo para esto."
+        </p>
+      </div>
+
+      <div class="protagonista reveal" style="transition-delay:.1s">
+        <div class="prot-header">
+          <span class="prot-name ice">Esther</span>
+          <span class="prot-sep">·</span>
+          <span class="prot-role">La reina de la noche</span>
+        </div>
+        <p class="prot-quote">
+          "Los tacones llevan semanas esperando este momento.<br>
+          Alta, elegante y lista para arrasar."
+        </p>
+      </div>
+
+      <div class="protagonista reveal" style="transition-delay:.2s">
+        <div class="prot-header">
+          <span class="prot-name gold">Virginia</span>
+          <span class="prot-sep">·</span>
+          <span class="prot-role">La amenaza en la pista</span>
+        </div>
+        <p class="prot-quote">
+          "Tiene una lista de pasos prohibidos que nadie<br>
+          ha podido seguir jamás. Esta noche los estrena."
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Andrea — artista invitada, rol secundario -->
+    <p class="artista-line reveal" style="transition-delay:.3s">
+      ✦ &nbsp; Con la participación especial de <strong>Andrea</strong> &nbsp;·&nbsp; Artista invitada &nbsp; ✦
+    </p>
+
+  </div>
+</section>
+
+<!-- ══ EQUIPOS ════════════════════════════════════════ -->
+<section class="equipos">
+  <p class="section-tag reveal">Elige bando</p>
+  <h2 class="section-big reveal" style="transition-delay:.1s">
+    Dos equipos.<br><span class="accent">Una sola noche.</span>
+  </h2>
+
+  <div class="equipos-vs">
+    <div class="equipo-name beyond reveal-left">Las<br>Beyoncébootilicius</div>
+    <div class="vs-badge reveal">VS</div>
+    <div class="equipo-name ricardo reveal-right">Los<br>Ricardo's Team</div>
+  </div>
+
+  <p class="equipos-sub reveal">
+    Un rato de risas, baile y buenísima compañía.<br>
+    El gym que entrena junto, también cena junto.
+  </p>
+</section>
+
+<!-- ══ FORM ═══════════════════════════════════════════ -->
+<section class="form-section" id="apuntate">
+  <h2 class="form-headline reveal">Apúntate</h2>
+  <p class="form-sub reveal" style="transition-delay:.1s">
+    <strong>Jueves 29 de mayo</strong> · Inscripciones hasta el <strong>22 de mayo</strong>
+  </p>
+
+  <!-- Estado cerrado: se activa automáticamente o cuando FORM_OPEN = false -->
+  <div class="closed-state" id="closedState">
+    Las inscripciones para la Cena Calentamiento han cerrado.<br>
+    <span style="font-size:.85rem;color:var(--muted);display:block;margin-top:.5rem">
+      ¿Llegaste tarde? Habla directamente con el gym.
+    </span>
+  </div>
+
+  <!-- Google Form embebido -->
+  <div class="form-iframe-wrap reveal" id="formIframe" style="display:none;transition-delay:.15s">
+    <iframe
+      src="https://docs.google.com/forms/d/e/1FAIpQLScsHkMIy-MenSb69nAc-bi78hr9qDiVHJqsXRaPU1EqL_0SKQ/viewform?embedded=true"
+      title="Inscripción Cena Calentamiento"
+      loading="lazy">
+      Cargando formulario…
+    </iframe>
+  </div>
+
+</section>
+
+<!-- ══ FOOTER ════════════════════════════════════════ -->
+<footer>
+  <div class="footer-left">
+    <img class="footer-logo-img"
+         src="619857201_17843410143680998_3782582012542148247_n.jpg"
+         alt="Gym Polop"/>
+    <span class="footer-sep">·</span>
+    <span style="font-size:.72rem;color:var(--muted)">Polop, Alicante</span>
+  </div>
+  <div class="footer-right">
+    Sistema digital por <strong><a href="https://masesora.com" target="_blank">Masesora</a></strong><br>
+    <span style="font-size:.65rem;opacity:.5">Digitalización para negocios</span>
+  </div>
+</footer>
+
+<!-- ══ MASESORA STRIP ══════════════════════════════ -->
+<div class="masesora-strip">
+  <p>¿Tu negocio necesita una experiencia digital como esta?</p>
+  <span class="masesora-dot">✦</span>
+  <a href="https://masesora.com" target="_blank" rel="noopener">masesora.com →</a>
+</div>
+
+<!-- ══ MASESORA — CÓMO TRABAJAMOS ═══════════════════ -->
+<section class="mp-proceso">
+  <div class="mp-proceso-inner">
+    <div class="mp-brand">
+      <img src="masesora-wordmark-transparent.svg" alt="Masesora" class="mp-brand-logo"/>
+      <span class="mp-brand-tagline">Digitalización para negocios locales</span>
+    </div>
+    <p class="mp-tag">Cómo trabajamos</p>
+    <h2 class="mp-title">Simple.<br><span class="accent">Rápido.</span></h2>
+    <div class="mp-steps">
+      <div class="mp-step">
+        <div class="mp-num">01</div>
+        <div class="mp-body">
+          <h4>Me cuentas qué necesitas</h4>
+          <p>Una conversación — por WhatsApp, por teléfono, en persona. Sin formularios de onboarding de 40 preguntas. Me dices qué quieres conseguir y yo entiendo el resto.</p>
+        </div>
+      </div>
+      <div class="mp-step">
+        <div class="mp-num">02</div>
+        <div class="mp-body">
+          <h4>Lo construyo yo</h4>
+          <p>No hay equipo de 10 personas ni timings de agencia. Lo construyo y te lo enseño rápido — normalmente en días, no en semanas.</p>
+        </div>
+      </div>
+      <div class="mp-step">
+        <div class="mp-num">03</div>
+        <div class="mp-body">
+          <h4>Lo tienes funcionando</h4>
+          <p>Entregado, explicado y listo para usar. Y si algo falla o quieres cambiarlo, lo arreglamos — sin sorpresas.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ MASESORA — CTA ════════════════════════════════ -->
+<section class="mp-cta">
+  <p class="mp-tag">Siguiente paso</p>
+  <h2 class="mp-cta-h2">¿Lo hacemos?</h2>
+  <p class="mp-cta-sub">
+    Sin compromiso. Sin presupuesto kilométrico.<br>
+    <strong>Una conversación y vemos qué tiene sentido.</strong>
+  </p>
+  <a href="https://qrtarjetavisita.onrender.com" target="_blank" rel="noopener" class="mp-btn">
+    Hablar con Masesora
+  </a>
+  <p class="mp-note">masesora.com · Polop, Alicante</p>
+</section>
+
+<script>
+// ══ CONFIG ══════════════════════════════════════════
+const CFG = {
+  FORM_OPEN: true,   // ← pon false para cerrar manualmente
+  DEADLINE:  new Date('2025-05-22T23:59:59+02:00'),
+  MSG_OK:    "¡Apuntado/a! Te esperamos el jueves 29 🥂",
+  MSG_ERR:   "Algo salió mal. Inténtalo de nuevo o escríbenos directamente."
+};
+
+// ══ PARTICLES ══════════════════════════════════════
+const canvas = document.getElementById('bgCanvas');
+const ctx    = canvas.getContext('2d');
+let W, H, particles = [];
+function resize(){ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+resize(); window.addEventListener('resize', resize);
+class Particle{
+  constructor(){ this.reset(true) }
+  reset(init=false){
+    this.x  = Math.random()*W;
+    this.y  = init ? Math.random()*H : H+10;
+    this.r  = .6+Math.random()*1.8;
+    this.vx = (Math.random()-.5)*.25;
+    this.vy = -(.2+Math.random()*.5);
+    this.alpha = 0; this.targetAlpha = .12+Math.random()*.28;
+    this.hue = Math.random()<.5 ? 178+Math.random()*12 : 42+Math.random()*10;
+  }
+  update(){ this.x+=this.vx; this.y+=this.vy; this.alpha=Math.min(this.alpha+.005,this.targetAlpha); if(this.y<-10)this.reset(); }
+  draw(){ ctx.beginPath(); ctx.arc(this.x,this.y,this.r,0,Math.PI*2); ctx.fillStyle=`hsla(${this.hue},90%,65%,${this.alpha})`; ctx.fill(); }
+}
+for(let i=0;i<120;i++) particles.push(new Particle());
+(function loop(){ ctx.clearRect(0,0,W,H); particles.forEach(p=>{p.update();p.draw()}); requestAnimationFrame(loop); })();
+
+// ══ SCROLL REVEAL ══════════════════════════════════
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });
+},{threshold:.15});
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>io.observe(el));
+
+// ══ FORM STATE ══════════════════════════════════════
+function applyFormState(){
+  const closed = !CFG.FORM_OPEN;
+  document.getElementById('closedState').style.display  = closed ? 'block' : 'none';
+  document.getElementById('formIframe').style.display   = closed ? 'none'  : 'block';
+}
+applyFormState();
+
+// ══ COUNTDOWN ══════════════════════════════════════
+function tick(){
+  const diff = CFG.DEADLINE - new Date();
+  if(diff<=0){
+    document.getElementById('heroCountdown').style.opacity='.3';
+    ['cdD','cdH','cdM','cdS'].forEach(id=>document.getElementById(id).textContent='00');
+    clearInterval(cdTimer); return;
+  }
+  const d=Math.floor(diff/86400000), h=Math.floor((diff%86400000)/3600000),
+        m=Math.floor((diff%3600000)/60000), s=Math.floor((diff%60000)/1000);
+  document.getElementById('cdD').textContent=String(d).padStart(2,'0');
+  document.getElementById('cdH').textContent=String(h).padStart(2,'0');
+  document.getElementById('cdM').textContent=String(m).padStart(2,'0');
+  document.getElementById('cdS').textContent=String(s).padStart(2,'0');
+}
+tick();
+const cdTimer = setInterval(tick,1000);
+</script>
+</body>
+</html>

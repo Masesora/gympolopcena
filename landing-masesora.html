@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Masesora · Digitalización para negocios locales</title>
+<link rel="icon" href="favicon-masesora.ico" type="image/x-icon"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:ital,wght@0,300;0,400;0,600;0,800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --teal:#1DCECE;
+  --gold:#F5C84A;
+  --dark:#08070A;
+  --dark2:#110F16;
+  --white:#F8F4FF;
+  --muted:#7A7490;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--dark);color:var(--white);overflow-x:hidden}
+
+/* ══ NAV ══════════════════════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.85rem 2.5rem;
+  background:rgba(8,7,10,.8);backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(29,206,206,.1);
+}
+.nav-logo{
+  font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.12em;
+  background:linear-gradient(135deg,var(--teal),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.nav-sub{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+
+/* ══ REVEAL ══════════════════════════════════════ */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .8s,transform .8s}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ══ PROCESO ══════════════════════════════════════ */
+.proceso{
+  padding:9rem 1.5rem 7rem;
+  background:var(--dark);
+}
+.proceso-inner{max-width:760px;margin:0 auto}
+
+.section-tag{
+  display:inline-block;font-size:.62rem;letter-spacing:.25em;text-transform:uppercase;
+  color:var(--teal);border:1px solid rgba(29,206,206,.3);border-radius:50px;
+  padding:.28rem .85rem;margin-bottom:1rem;
+}
+.section-big{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(3rem,9vw,6.5rem);
+  line-height:.93;letter-spacing:-.01em;
+  margin-bottom:3.5rem;
+}
+.section-big .accent{
+  background:linear-gradient(135deg,var(--teal),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+
+.proceso-steps{display:flex;flex-direction:column}
+.proceso-step{
+  display:grid;grid-template-columns:3.5rem 1fr;gap:1.6rem;
+  padding:2.2rem 0;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.proceso-step:last-child{border-bottom:none}
+.ps-num{
+  font-family:'Bebas Neue',sans-serif;font-size:3.2rem;
+  line-height:1;
+  background:linear-gradient(135deg,var(--teal),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  padding-top:.1rem;
+}
+.ps-body h4{
+  font-family:'Bebas Neue',sans-serif;font-size:1.55rem;
+  letter-spacing:.04em;margin-bottom:.5rem;color:var(--white);
+}
+.ps-body p{
+  font-size:.9rem;line-height:1.75;color:rgba(248,244,255,.5);
+}
+
+/* ══ CTA ══════════════════════════════════════════ */
+.cta-section{
+  padding:7rem 1.5rem 8rem;
+  background:linear-gradient(180deg,var(--dark) 0%,var(--dark2) 100%);
+  text-align:center;
+  position:relative;overflow:hidden;
+}
+.cta-glow{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:500px;height:500px;
+  background:radial-gradient(circle,rgba(29,206,206,.07) 0%,transparent 65%);
+  pointer-events:none;
+}
+.cta-h2{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(3.5rem,13vw,9rem);
+  line-height:.88;
+  background:linear-gradient(160deg,#fff 20%,var(--teal) 60%,var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  margin-bottom:.8rem;
+}
+.cta-sub{
+  font-size:clamp(.88rem,2vw,1.05rem);font-weight:300;
+  color:rgba(248,244,255,.45);margin-bottom:3rem;line-height:1.7;
+}
+.cta-sub strong{color:var(--white);font-weight:600}
+.btn-big{
+  display:inline-block;padding:1.2rem 3.5rem;
+  background:linear-gradient(135deg,var(--teal),#0fa8a8);
+  color:var(--dark);
+  font-family:'Bebas Neue',sans-serif;font-size:1.55rem;letter-spacing:.2em;
+  border-radius:4px;text-decoration:none;
+  position:relative;overflow:hidden;
+  transition:transform .25s,box-shadow .25s;
+  box-shadow:0 0 50px rgba(29,206,206,.18);
+}
+.btn-big::before{
+  content:'';position:absolute;top:-50%;left:-60%;width:40%;height:200%;
+  background:rgba(255,255,255,.22);transform:skewX(-20deg);
+  animation:shine 3.5s 1s infinite;
+}
+.btn-big:hover{transform:translateY(-3px);box-shadow:0 10px 55px rgba(29,206,206,.38)}
+@keyframes shine{0%{left:-60%}60%,100%{left:130%}}
+.cta-note{margin-top:1.4rem;font-size:.68rem;color:rgba(248,244,255,.22);letter-spacing:.08em}
+
+/* ══ FOOTER ══════════════════════════════════════ */
+footer{
+  border-top:1px solid rgba(255,255,255,.06);
+  padding:1.6rem 2.5rem;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:.8rem;
+}
+.footer-logo{
+  font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:.12em;
+  background:linear-gradient(135deg,var(--teal),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.footer-right{font-size:.68rem;color:var(--muted);letter-spacing:.05em}
+
+/* ══ RESPONSIVE ══════════════════════════════════ */
+@media(max-width:600px){
+  nav{padding:.7rem 1.2rem}
+  .proceso{padding:7.5rem 1rem 5rem}
+  .proceso-step{grid-template-columns:2.8rem 1fr;gap:1rem}
+  .cta-section{padding:5rem 1rem 6rem}
+  footer{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══════════════════════════════════════════ -->
+<nav>
+  <span class="nav-logo">Masesora</span>
+  <span class="nav-sub">Polop, Alicante</span>
+</nav>
+
+<!-- ══ PROCESO ═══════════════════════════════════════ -->
+<section class="proceso">
+  <div class="proceso-inner">
+    <p class="section-tag reveal">Cómo trabajamos</p>
+    <h2 class="section-big reveal" style="transition-delay:.08s">
+      Simple.<br><span class="accent">Rápido.</span>
+    </h2>
+
+    <div class="proceso-steps">
+      <div class="proceso-step reveal" style="transition-delay:.1s">
+        <div class="ps-num">01</div>
+        <div class="ps-body">
+          <h4>Me cuentas qué necesitas</h4>
+          <p>Una conversación — por WhatsApp, por teléfono, en persona. Sin formularios de onboarding de 40 preguntas. Me dices qué quieres conseguir y yo entiendo el resto.</p>
+        </div>
+      </div>
+
+      <div class="proceso-step reveal" style="transition-delay:.2s">
+        <div class="ps-num">02</div>
+        <div class="ps-body">
+          <h4>Lo construyo yo</h4>
+          <p>No hay equipo de 10 personas ni timings de agencia. Lo construyo y te lo enseño rápido — normalmente en días, no en semanas.</p>
+        </div>
+      </div>
+
+      <div class="proceso-step reveal" style="transition-delay:.3s">
+        <div class="ps-num">03</div>
+        <div class="ps-body">
+          <h4>Lo tienes funcionando</h4>
+          <p>Entregado, explicado y listo para usar. Y si algo falla o quieres cambiarlo, lo arreglamos — sin sorpresas.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CTA ════════════════════════════════════════════ -->
+<section class="cta-section">
+  <div class="cta-glow"></div>
+  <p class="section-tag reveal">Siguiente paso</p>
+  <h2 class="cta-h2 reveal" style="transition-delay:.08s">¿Lo hacemos?</h2>
+  <p class="cta-sub reveal" style="transition-delay:.18s">
+    Sin compromiso. Sin presupuesto kilométrico.<br>
+    <strong>Una conversación y vemos qué tiene sentido.</strong>
+  </p>
+  <a href="https://qrtarjetavisita.onrender.com" target="_blank" rel="noopener"
+     class="btn-big reveal" style="transition-delay:.28s">
+    Hablar con Masesora
+  </a>
+  <p class="cta-note reveal" style="transition-delay:.4s">masesora.com · Polop, Alicante</p>
+</section>
+
+<!-- ══ FOOTER ════════════════════════════════════════ -->
+<footer>
+  <span class="footer-logo">Masesora</span>
+  <span class="footer-right">Digitalización para negocios locales · Polop, Alicante</span>
+</footer>
+
+<script>
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target) }
+  });
+}, {threshold:.12});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
