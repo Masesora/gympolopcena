@@ -732,7 +732,8 @@ footer{
 // ══ CONFIG ══════════════════════════════════════════
 const CFG = {
   FORM_OPEN: true,   // ← pon false para cerrar manualmente
-  DEADLINE:  new Date('2025-05-22T23:59:59+02:00'),
+  DEADLINE:  new Date('2026-05-22T23:59:59+02:00'),
+  EVENT_DATE: new Date('2026-05-29T20:00:00+02:00'),
   MSG_OK:    "¡Apuntado/a! Te esperamos el jueves 29 🥂",
   MSG_ERR:   "Algo salió mal. Inténtalo de nuevo o escríbenos directamente."
 };
@@ -776,7 +777,7 @@ applyFormState();
 
 // ══ COUNTDOWN ══════════════════════════════════════
 function tick(){
-  const diff = CFG.DEADLINE - new Date();
+  const diff = CFG.EVENT_DATE - new Date();
   if(diff<=0){
     document.getElementById('heroCountdown').style.opacity='.3';
     ['cdD','cdH','cdM','cdS'].forEach(id=>document.getElementById(id).textContent='00');
